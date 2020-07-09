@@ -23,7 +23,7 @@ namespace vega
         public void ConfigureServices(IServiceCollection services)
         {
             // Registering our DbContext for Dependency Injection
-            services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(""));
+            services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             //
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
