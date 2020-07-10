@@ -1,3 +1,4 @@
+import { MakeService } from './services/make.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -33,7 +34,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 
     ])
   ],
-  providers: [],
+  providers: [MakeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
