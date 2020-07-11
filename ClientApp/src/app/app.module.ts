@@ -34,6 +34,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
       { path: '**', redirectTo: '' }
 
     ])
+
   ],
   providers: [
     VehicleService],
