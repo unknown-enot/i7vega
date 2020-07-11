@@ -1,9 +1,11 @@
-import { MakeService } from './services/make.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+
+import { FeatureService } from './services/feature.service';
+import { MakeService } from './services/make.service';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
@@ -34,7 +36,9 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 
     ])
   ],
-  providers: [MakeService],
+  providers: [
+    MakeService,
+    FeatureService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
