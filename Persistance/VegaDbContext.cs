@@ -5,6 +5,8 @@ namespace vega.Persistance
 {
     public class VegaDbContext : DbContext
     {
+        public DbSet<Make> Makes { get; set; }
+        public DbSet<Feature> Features { get; set; }
        /*  public VegaDbContext(string connectionString)
             :base(connectionString)
         {
@@ -17,7 +19,11 @@ namespace vega.Persistance
         {
         }
         
-        public DbSet<Make> Makes { get; set; }
-        public DbSet<Feature> Features { get; set; }
+        // Fluent API
+        protected override void OnModelCreating(ModelBuilder modelBuilder){
+            modelBuilder.Entity<VehicleFeature>().HasKey(vf =>
+                new { vf.VehicleId, vf.FeatureId });
+        }
+        
     }
 }

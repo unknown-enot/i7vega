@@ -18,14 +18,23 @@
     </div>
 
     <p>Is this vehicle registered?</p>
-    <label for="registered" class="form-check-inline">
+    <!-- <label for="registered" class="form-check-inline">
         <input type="radio" name="isRegistered" id="registered" value="true" class="form-check-input"> Yes 
     </label>
     <label for="notRegistered" class="form-check-inline">
         <input type="radio" name="isRegistered" id="notRegistered" value="false" class="form-check-input"> No
     </label>
+ -->
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label *ngFor="let item of itemsList" class="btn btn-secondary" [class.active]="item.name == radioSel.name ? true : false">
+            <input type="radio" name="isRegistered" [(ngModel)]="radioSelected" value="{{item.value}}" (change)="onItemChange(item)" [checked]="item.name == 'Yes' ? true : false"> {{ item.name }}
+        </label>
+    </div>
+    <p> </p>
     
     <h2>Features</h2>
+    <i *ngIf="isFeaturesLoading" class="fa fa-spinner fa-spin fa-3x"></i>
+
     <div *ngFor="let feature of features" class="form-group form-check">
         <label for="feature{{ feature.id }}" class="form-check-label">
             <input type="checkbox" class="form-check-input" id="feature{{ feature.id }}">{{ feature.name }}
@@ -46,6 +55,6 @@
         <input type="text" id="contactEmail" class="form-control">
     </div>
 
-    <button class="btn btn-primary">Save</button>
+    <button class="btn btn-secondary">Save</button>
 
 </form>
