@@ -13,11 +13,14 @@ export class VehicleFormComponent implements OnInit {
   makes: any[];
   models: any[];
   features: any[];
-  vehicle: any = {};
+  vehicle: any = {
+    features:[],
+    contact:{}
+  };
 
   radioSel:any;
-  radioSelected:string;
-  radioSelectedString:string;
+  
+  
 
   itemsList;
 
@@ -33,13 +36,13 @@ export class VehicleFormComponent implements OnInit {
            value:'false'
         }
       ];
-      this.radioSelected = "true";
+      this.vehicle.isRegistered = "true";
       this.getSelecteditem();
   }
 
   getSelecteditem(){
     //console.log("radioSelected", this.radioSelected);
-    this.radioSel = this.itemsList.find(Item => Item.value === this.radioSelected);
+    this.radioSel = this.itemsList.find(Item => Item.value === this.vehicle.isRegistered);
     if(!this.radioSel)
       this.radioSel = {
         name: '',
@@ -65,8 +68,18 @@ export class VehicleFormComponent implements OnInit {
   }
 
   onMakeChange(){
-    var selectedMake = this.makes.find(m => m.id == this.vehicle.make);
-    this.models = selectedMake ? selectedMake.models : [];   
+    var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
+    this.models = selectedMake ? selectedMake.models : [];
+    delete this.vehicle.modelId;   
+  }
+
+  onFeatureToggle(featureId, $event){
+    if($event.target.checked)
+      this.vehicle.features.push(featureId);
+    else {
+      var index = this.vehicle.features.indexOf(featureId);
+      this.vehicle.features.splice(index,1);
+    }
   }
 
 
