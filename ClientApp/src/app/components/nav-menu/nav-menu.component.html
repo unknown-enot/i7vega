@@ -22,24 +22,34 @@
         <ul class="navbar-nav flex-grow">
           <li
             class="nav-item"
-            [routerLinkActive]="['link-active']"
+            
+            [routerLinkActive]="['link-active','bg-dark']"
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <a class="nav-link text-light" [routerLink]="['/']"
             >Home</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li 
+            class="nav-item" 
+            
+            [routerLinkActive]="['link-active', 'bg-dark']">
             <a class="nav-link text-light" [routerLink]="['/vehicles/new']"
               >
               New Vehicle</a
               >
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li 
+            class="nav-item" 
+            
+            [routerLinkActive]="['link-active','bg-dark']">
             <a class="nav-link text-light" [routerLink]="['/counter']"
               >Counter</a
             >
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
+          <li 
+            class="nav-item"
+
+            [routerLinkActive]="['link-active','bg-dark']">
             <a class="nav-link text-light" [routerLink]="['/fetch-data']"
               >Fetch data</a
             >
