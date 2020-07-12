@@ -2,10 +2,10 @@ using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using vega.Controllers.Resources;
-using vega.Models;
-using vega.Persistance;
+using vega.Core;
+using vega.Core.Models;
+
 
 namespace vega.Controllers
 {
