@@ -26,6 +26,13 @@ namespace vega.Persistance
                 .SingleOrDefaultAsync(v => v.Id == id);
         }
 
+        public async Task<Vehicle> GetVehicleWithFeatures(int id)
+        {
+            return await context.Vehicles
+                .Include(v => v.Features)
+                .SingleOrDefaultAsync(v => v.Id == id);
+        }
+
         public void Add(Vehicle vehicle)
         {
             context.Vehicles.Add(vehicle);
