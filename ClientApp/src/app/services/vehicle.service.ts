@@ -17,4 +17,9 @@ export class VehicleService {
   getMakes(){
     return this.http.get('/api/makes');
   }
+
+  create(vehicle) {
+    return this.http.post('/api/vehicles', vehicle);
+  }
+
 }
