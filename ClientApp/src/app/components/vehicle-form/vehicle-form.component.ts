@@ -1,7 +1,9 @@
+import { SaveVehicle, Vehicle } from './../../models/vehicle';
 import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, forkJoin } from 'rxjs';
+import * as _ from 'underscore';
 
 
 @Component({
@@ -16,9 +18,17 @@ export class VehicleFormComponent implements OnInit {
   makes: any[];
   models: any[];
   features: any[];
-  vehicle: any = {
+  vehicle: SaveVehicle = {
+    id: 0,
+    makeId: 0,
+    modelId: 0,
+    isRegistered: false,
     features:[],
-    contact:{}
+    contact:{
+      name: '',
+      email: '',
+      phone: ''
+    }
   };
 
   radioSel:any;
@@ -34,14 +44,14 @@ export class VehicleFormComponent implements OnInit {
       this.itemsList = [
         {
            name:'Yes',
-           value:'true'
+           value: 'true'
         },
         {
            name:'No',
-           value:'false'
+           value: 'false'
         }
       ];
-      this.vehicle.isRegistered = "true";
+      
       this.getSelecteditem();
 
       route.params.subscribe(p => {
@@ -50,12 +60,13 @@ export class VehicleFormComponent implements OnInit {
   }
 
   getSelecteditem(){
-    //console.log("radioSelected", this.radioSelected);
+    
     this.radioSel = this.itemsList.find(Item => Item.value === this.vehicle.isRegistered);
+    //console.log(this.itemsList.find(Item => Item.value === this.vehicle.isRegistered));
     if(!this.radioSel)
       this.radioSel = {
-        name: '',
-        value: ''
+        name: 'No',
+        value: 'false'
       };
     //console.log("radioSel", this.radioSel);
   }
@@ -79,8 +90,17 @@ export class VehicleFormComponent implements OnInit {
       this.isFeaturesLoading = false;
 
       if(this.vehicle.id)
-        this.vehicle = data[2];
+        this.setVehicle(<any>data[2]);
     });
+  }
+
+  private setVehicle(v: Vehicle){
+    this.vehicle.id = v.id;
+    this.vehicle.makeId = v.make.id;
+    this.vehicle.modelId = v.model.id;
+    this.vehicle.isRegistered = v.isRegistered;
+    this.vehicle.contact = v.contact;
+    this.vehicle.features = _.pluck(v.features, 'id');
   }
 
   onMakeChange(){

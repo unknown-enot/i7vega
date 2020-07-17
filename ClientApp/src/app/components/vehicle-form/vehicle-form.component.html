@@ -44,9 +44,9 @@
                 type="radio" 
                 name="isRegistered" 
                 [(ngModel)]="vehicle.isRegistered" 
-                value="{{item.value}}" 
+                value="{{ item.value }}" 
                 (change)="onItemChange(item)" 
-                [checked]="item.name == 'Yes' ? true : false"
+                [checked]="item.name == radioSel.name ? true : false"
                 > {{ item.name }}
         </label>
     </div>
