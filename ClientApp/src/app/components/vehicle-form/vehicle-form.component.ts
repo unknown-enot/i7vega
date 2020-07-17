@@ -1,6 +1,8 @@
 import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, forkJoin } from 'rxjs';
+
 
 @Component({
   selector: 'app-vehicle-form',
@@ -63,20 +65,22 @@ export class VehicleFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.vehicleService.getVehicle(this.vehicle.id)
-      .subscribe(v => {
-        this.vehicle = v;
-      });
+    var sources = [
+      this.vehicleService.getMakes(),
+      this.vehicleService.getFeatures()
+    ];
 
-    this.vehicleService.getMakes()
-      .subscribe(makes =>
-        this.makes = <any>makes
-      );
+    if(this.vehicle.id)
+      sources.push(this.vehicleService.getVehicle(this.vehicle.id));
 
-    this.vehicleService.getFeatures()
-      .subscribe(features => {
-        this.features = <any>features;
-        this.isFeaturesLoading = false;});
+    forkJoin(sources).subscribe(data => {
+      this.makes = <any>data[0];
+      this.features = <any>data[1];
+      this.isFeaturesLoading = false;
+
+      if(this.vehicle.id)
+        this.vehicle = data[2];
+    });
   }
 
   onMakeChange(){
