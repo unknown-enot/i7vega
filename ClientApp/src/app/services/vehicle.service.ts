@@ -9,6 +9,10 @@ export class VehicleService {
   constructor(private http: HttpClient) {
     
   }
+  
+  getVehicle(id){
+    return this.http.get('/api/vehicles/' + id);
+  }
 
   getFeatures(){
     return this.http.get('/api/features');

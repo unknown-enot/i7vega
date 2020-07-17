@@ -1,5 +1,6 @@
 import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -25,7 +26,9 @@ export class VehicleFormComponent implements OnInit {
   itemsList;
 
   constructor(
-    private vehicleService: VehicleService) { 
+    private vehicleService: VehicleService,
+    private router: Router,
+    private route: ActivatedRoute) { 
       this.itemsList = [
         {
            name:'Yes',
@@ -38,6 +41,10 @@ export class VehicleFormComponent implements OnInit {
       ];
       this.vehicle.isRegistered = "true";
       this.getSelecteditem();
+
+      route.params.subscribe(p => {
+        this.vehicle.id = +p['id'];
+      });
   }
 
   getSelecteditem(){
@@ -56,6 +63,11 @@ export class VehicleFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.vehicleService.getVehicle(this.vehicle.id)
+      .subscribe(v => {
+        this.vehicle = v;
+      });
+
     this.vehicleService.getMakes()
       .subscribe(makes =>
         this.makes = <any>makes

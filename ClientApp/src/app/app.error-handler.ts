@@ -1,4 +1,4 @@
-import { ErrorHandler, Inject, NgZone, Injectable } from "@angular/core";
+import { ErrorHandler, Inject, NgZone, Injectable, isDevMode } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import * as Sentry from "@sentry/browser";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -62,7 +62,12 @@ export class AppErrorHandler implements ErrorHandler {
   
 
 
+        
         // When in development mode, log the error to console for immediate feedback.
+        // if (!isDevMode()) {
+        //     console.error(extractedError);
+        // }
+
         this.ngZone.run(() => {
             this.toastrService.error('An unexpected error happened.', 'Error');
         });
