@@ -6,6 +6,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { ToastrModule } from 'ngx-toastr';
+import * as Sentry from "@sentry/browser";
 
 import { VehicleService } from './services/vehicle.service';
 
@@ -16,6 +17,16 @@ import { CounterComponent } from './components/counter/counter.component';
 import { FetchDataComponent } from './components/fetch-data/fetch-data.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+Sentry.init({
+  dsn: "https://2362c8277a134c13bbf93b3fde92fd6c@o421718.ingest.sentry.io/5341916",
+  // TryCatch has to be configured to disable XMLHttpRequest wrapping, as we are going to handle
+  // http module exceptions manually in Angular's ErrorHandler and we don't want it to capture the same error twice.
+  // Please note that TryCatch configuration requires at least @sentry/browser v5.16.0.
+  integrations: [new Sentry.Integrations.TryCatch({
+    XMLHttpRequest: false,
+  })],
+});
 
 @NgModule({
   declarations: [
