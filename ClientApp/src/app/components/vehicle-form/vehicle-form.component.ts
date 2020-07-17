@@ -1,3 +1,4 @@
+import { ToastrService } from 'ngx-toastr';
 import { SaveVehicle, Vehicle } from './../../models/vehicle';
 import { VehicleService } from '../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
@@ -40,7 +41,8 @@ export class VehicleFormComponent implements OnInit {
   constructor(
     private vehicleService: VehicleService,
     private router: Router,
-    private route: ActivatedRoute) { 
+    private route: ActivatedRoute,
+    private toastrService: ToastrService) { 
       this.itemsList = [
         {
            name:'Yes',
@@ -126,9 +128,18 @@ export class VehicleFormComponent implements OnInit {
   }
 
   submit(){
-    this.vehicleService.create(this.vehicle)
+    if(this.vehicle.id){
+      this.vehicleService.update(this.vehicle)
+        .subscribe(x => {
+          this.toastrService.success('The vehicle was successfully updated', 'Success');
+        });  
+    }
+    else {
+      this.vehicleService.create(this.vehicle)
       .subscribe(
         x => console.log(x));
+    }
+    
   }
 
 }
