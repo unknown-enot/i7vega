@@ -44,11 +44,11 @@ export class VehicleFormComponent implements OnInit {
       this.itemsList = [
         {
            name:'Yes',
-           value: 'true'
+           value: true
         },
         {
            name:'No',
-           value: 'false'
+           value: false
         }
       ];
       
@@ -91,6 +91,7 @@ export class VehicleFormComponent implements OnInit {
 
       if(this.vehicle.id)
         this.setVehicle(<any>data[2]);
+        this.populateModels();
     });
   }
 
@@ -101,12 +102,18 @@ export class VehicleFormComponent implements OnInit {
     this.vehicle.isRegistered = v.isRegistered;
     this.vehicle.contact = v.contact;
     this.vehicle.features = _.pluck(v.features, 'id');
+    
   }
 
   onMakeChange(){
+    this.populateModels();
+    delete this.vehicle.modelId;   
+  }
+
+  private populateModels(){
     var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];
-    delete this.vehicle.modelId;   
+    this.getSelecteditem();
   }
 
   onFeatureToggle(featureId, $event){

@@ -62,6 +62,7 @@
                 class="form-check-input" 
                 id="feature{{ feature.id }}"
                 (change)="onFeatureToggle(feature.id, $event)"
+                [checked]="vehicle.features.includes(feature.id)"
                 >{{ feature.name }}
         </label>
     </div>
