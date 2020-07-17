@@ -102,4 +102,11 @@
         [disabled]="!f.valid"
         >Save
     </button>
+    <button 
+        type="button" 
+        class="btn btn-danger"
+        (click)="delete()"
+        *ngIf="vehicle.id"
+        >Delete
+    </button>
 </form>
