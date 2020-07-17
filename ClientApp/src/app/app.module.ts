@@ -1,5 +1,6 @@
+import { AppErrorHandler } from './app.error-handler';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -46,6 +47,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
   ],
   providers: [
+    { provide: ErrorHandler, useClass: AppErrorHandler },
     VehicleService],
   bootstrap: [AppComponent]
 })
