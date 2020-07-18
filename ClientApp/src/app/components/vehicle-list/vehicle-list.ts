@@ -1,3 +1,4 @@
+import { forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Vehicle, KeyValuePair } from './../../models/vehicle';
 import { VehicleService } from './../../services/vehicle.service';
@@ -10,8 +11,8 @@ import { Router } from '@angular/router';
 export class VehicleListComponent implements OnInit {
     isLoading = true;
     vehicles: Vehicle[];
-    allVehicles: Vehicle[];
     makes: KeyValuePair[];
+    models: KeyValuePair[];
     filter: any = {};
 
     constructor(
@@ -22,12 +23,9 @@ export class VehicleListComponent implements OnInit {
     
     ngOnInit(){
         this.vehicleService.getMakes()
-            .subscribe(makes => this.makes = <any>makes);
+            .subscribe(makes => this.makes = <any>makes);            
 
-        this.vehicleService.getVehicles()
-            .subscribe(vehicles => this.vehicles = this.allVehicles = <any>vehicles,
-                null,
-                () => this.isLoading = false);
+        this.populateVehicles();
     }
 
     delete(vehicle){
@@ -49,21 +47,41 @@ export class VehicleListComponent implements OnInit {
                     () => this.toastrService.success('Vehicle has been successfully deleted from the Database.','Deleted'));
 		}
     }
-    
-    onFilterChange() {
-        var vehicles = this.allVehicles;
 
-        if(this.filter.makeId)
-            vehicles = vehicles.filter(v => v.make.id == this.filter.makeId);
-        
-        if(this.filter.modelId)
-            vehicles = vehicles.filter(v => v.model.id == this.filter.modelId);
+    private populateModels(){
+        var selectedMake = this.makes.find(m => m.id == this.filter.makeId);
+        this.models = selectedMake ? selectedMake.models : [];
+      }
 
-        this.vehicles = vehicles;
+    private populateVehicles(){
+        this.isLoading = true;
+        this.vehicleService.getVehicles(this.filter)
+            .subscribe(vehicles => this.vehicles = <any>vehicles,
+                null,
+                () => this.isLoading = false);
     }
+    
+    onMakeChange(){
+        this.populateModels();
+        delete this.filter.modelId;
+    }
+
+    //onFilterChangeFinal() {
+    //    this.populateVehicles();
+        
+        // var vehicles = this.allVehicles;
+
+        // if(this.filter.makeId)
+        //     vehicles = vehicles.filter(v => v.make.id == this.filter.makeId);
+        
+        // if(this.filter.modelId)
+        //     vehicles = vehicles.filter(v => v.model.id == this.filter.modelId);
+
+        // this.vehicles = vehicles;
+    //}
 
     resetFilter(){
         this.filter = {};
-        this.onFilterChange();
+        this.populateVehicles();
     }
 }
