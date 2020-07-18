@@ -32,16 +32,14 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col" (click)="sortBy('make')">
-                Make
-                <i *ngIf="query.sortBy === 'make'" 
-                class="fa" 
-                [class.fa-sort-amount-asc]="query.isSortAscending"
-                [class.fa-sort-amount-desc]="!query.isSortAscending"
-                ></i>
+            <th scope="col" *ngFor="let c of columns" (click)="sortBy(c.key)">
+                    {{ c.title }}
+                    <i *ngIf="query.sortBy === c.key" 
+                        class="fa" 
+                        [class.fa-sort-amount-asc]="query.isSortAscending"
+                        [class.fa-sort-amount-desc]="!query.isSortAscending"
+                    ></i>
             </th>
-            <th scope="col" (click)="sortBy('model')">Model</th>
-            <th scope="col" (click)="sortBy('contactName')">Contact Name</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
         </tr>
