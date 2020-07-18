@@ -7,7 +7,7 @@
     <div class="form-group">
         <label for="make">Make</label>
         <select id="make" class="form-control"
-            [(ngModel)]="filter.makeId" (change)="onMakeChange()">
+            [(ngModel)]="query.makeId" (change)="onMakeChange()">
             <option value=""></option>
             <option *ngFor="let m of makes" value="{{ m.id }}">{{ m.name }}</option>
         </select>
@@ -15,7 +15,7 @@
     <div class="form-group">
         <label for="model">Model</label>
         <select id="model" class="form-control"
-            [(ngModel)]="filter.modelId">
+            [(ngModel)]="query.modelId">
             <option value=""></option>
             <option *ngFor="let mod of models" value="{{ mod.id }}">{{ mod.name }}</option>
         </select>
@@ -32,9 +32,9 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col">Make</th>
-            <th scope="col">Model</th>
-            <th scope="col">Contact Name</th>
+            <th scope="col" (click)="sortBy('make')">Make</th>
+            <th scope="col" (click)="sortBy('model')">Model</th>
+            <th scope="col" (click)="sortBy('contactName')">Contact Name</th>
             <th scope="col">Edit</th>
             <th scope="col">Delete</th>
         </tr>
