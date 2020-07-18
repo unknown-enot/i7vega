@@ -9,16 +9,22 @@ import { Router } from '@angular/router';
     templateUrl: 'vehicle-list.html'
 })
 export class VehicleListComponent implements OnInit {
+    private readonly PAGE_SIZE = 3;
+
+    queryResult: any = {};
     isLoading = true;
-    vehicles: Vehicle[];
     makes: KeyValuePair[];
     models: KeyValuePair[];
-    query: any = {};
+    query: any = {
+        pageSize: this.PAGE_SIZE
+    };
     columns = [
         { title: 'Make', key: 'make', isSortable: true },
         { title: 'Model', key: 'model', isSortable: true },
         { title: 'Contact Name', key: 'contactName', isSortable: true }
     ];
+
+
 
     constructor(
         private vehicleService: VehicleService,
@@ -35,10 +41,10 @@ export class VehicleListComponent implements OnInit {
 
     delete(vehicle){
 		if (confirm("Are you sure you want to delete " + vehicle.make.name + " - " + vehicle.model.name + "?")) {
-			var index = this.vehicles.indexOf(vehicle)
+			var index = this.queryResult.items.indexOf(vehicle)
 			// Here, with the splice method, we remove 1 object
             // at the given index.
-            this.vehicles.splice(index, 1);
+            this.queryResult.items.splice(index, 1);
 
 			this.vehicleService.delete(vehicle.id)
 				.subscribe(null, 
@@ -47,7 +53,7 @@ export class VehicleListComponent implements OnInit {
                         // Revert the view back to its original state
                         // by putting the user object at the index
                         // it used to be.
-						this.vehicles.splice(index, 0, vehicle);
+						this.queryResult.items.splice(index, 0, vehicle);
                     },
                     () => this.toastrService.success('Vehicle has been successfully deleted from the Database.','Deleted'));
 		}
@@ -59,14 +65,17 @@ export class VehicleListComponent implements OnInit {
       }
 
     private populateVehicles(){
+        
+
         this.isLoading = true;
         this.vehicleService.getVehicles(this.query)
-            .subscribe(vehicles => this.vehicles = <any>vehicles,
+            .subscribe(result => this.queryResult = result,
                 null,
                 () => this.isLoading = false);
     }
     
     onMakeChange(){
+        this.query.page = 1;
         this.populateModels();
         delete this.query.modelId;
     }
@@ -86,7 +95,11 @@ export class VehicleListComponent implements OnInit {
     //}
 
     resetFilter(){
-        this.query = {};
+        
+        this.query = {
+            page: 1,
+            pageSize: this.PAGE_SIZE
+        };
         this.populateVehicles();
     }
 
@@ -99,4 +112,12 @@ export class VehicleListComponent implements OnInit {
         }
         this.populateVehicles();
     }
+
+    onPageChange(page){
+        this.query.page = page;
+        this.populateVehicles();
+   
+    }
+
+    
 }

@@ -1,5 +1,6 @@
+import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list';
-import { SpinnerComponent } from './components/spinner/spinner';
+import { SpinnerComponent } from './components/shared/spinner';
 import { AppErrorHandler } from './app.error-handler';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
@@ -39,7 +40,8 @@ Sentry.init({
     FetchDataComponent,
     VehicleFormComponent,
     SpinnerComponent,
-    VehicleListComponent
+    VehicleListComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

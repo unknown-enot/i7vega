@@ -15,8 +15,13 @@ code {
   color: #e01a76;
 }
 
-.clickable {
+.clickable,
+.page-link {
   cursor: pointer;
+}
+
+.disabled {
+  cursor: not-allowed;
 }
 
 /* .btn-primary {
