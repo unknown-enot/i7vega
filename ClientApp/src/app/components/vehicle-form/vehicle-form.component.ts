@@ -10,7 +10,7 @@ import * as _ from 'underscore';
 @Component({
   selector: 'app-vehicle-form',
   templateUrl: './vehicle-form.component.html',
-  styleUrls: ['./vehicle-form.component.css']
+  styleUrls: ['./vehicle-form.component.css'],
 })
 export class VehicleFormComponent implements OnInit {
 
@@ -32,7 +32,6 @@ export class VehicleFormComponent implements OnInit {
     }
   };
 
-  radioSel:any;
   
   
 
@@ -43,38 +42,12 @@ export class VehicleFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toastrService: ToastrService) { 
-      this.itemsList = [
-        {
-           name:'Yes',
-           value: true
-        },
-        {
-           name:'No',
-           value: false
-        }
-      ];
       
-      this.getSelecteditem();
-
       route.params.subscribe(p => {
-        this.vehicle.id = +p['id'];
+        var pid = p['id'];
+        if(pid)
+          this.vehicle.id += pid;
       });
-  }
-
-  getSelecteditem(){
-    
-    this.radioSel = this.itemsList.find(Item => Item.value === this.vehicle.isRegistered);
-    //console.log(this.itemsList.find(Item => Item.value === this.vehicle.isRegistered));
-    if(!this.radioSel)
-      this.radioSel = {
-        name: 'No',
-        value: 'false'
-      };
-    //console.log("radioSel", this.radioSel);
-  }
-
-  onItemChange(item){
-    this.getSelecteditem();
   }
 
   ngOnInit() {
@@ -115,7 +88,6 @@ export class VehicleFormComponent implements OnInit {
   private populateModels(){
     var selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];
-    this.getSelecteditem();
   }
 
   onFeatureToggle(featureId, $event){
@@ -132,23 +104,19 @@ export class VehicleFormComponent implements OnInit {
       this.vehicleService.update(this.vehicle)
         .subscribe(x => {
           this.toastrService.success('The vehicle was successfully updated', 'Success');
+          this.router.navigate(['/vehicles']);
         });  
     }
     else {
       this.vehicleService.create(this.vehicle)
       .subscribe(
         x => console.log(x));
+        this.toastrService.success('The vehicle was successfully created', 'Success');
+        this.router.navigate(['/vehicles']);
     }
     
   }
 
-  delete(){
-    if(confirm("Are you sure?")){
-      this.vehicleService.delete(this.vehicle.id)
-        .subscribe(x => {
-          this.router.navigate(['/home']);
-        });
-    }
-  }
+  
 
 }

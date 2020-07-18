@@ -15,6 +15,10 @@ export class VehicleService {
     return this.http.get('/api/vehicles/' + id);
   }
 
+  getVehicles(){
+    return this.http.get('/api/vehicles');
+  }
+
   getFeatures(){
     return this.http.get('/api/features');
   }

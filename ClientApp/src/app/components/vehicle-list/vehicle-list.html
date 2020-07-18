@@ -1,0 +1,27 @@
+<h1>Vehicles</h1>
+
+<p>
+    <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Vehicle</a>
+</p> 
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Make</th>
+            <th scope="col">Model</th>
+            <th scope="col">Contact Name</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <spinner [visible]="isLoading"></spinner>
+    <tbody>
+        <tr *ngFor="let v of vehicles">
+            <td>{{ v.make.name }}</td>
+            <td>{{ v.model.name }}</td>
+            <td>{{ v.contact.name }}</td>
+            <td><a [routerLink]="['/vehicles/', v.id]"><i class="fa fa-pencil-square-o clickable"></i></a></td>
+            <td><i (click)="delete(v)" class="fa fa-times clickable"></i></td>
+        </tr>
+    </tbody>
+</table>  

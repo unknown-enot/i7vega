@@ -37,23 +37,35 @@
     </label>
  -->
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label *ngFor="let item of itemsList" 
+        <label for="registered"  
             class="btn btn-light" 
-            [class.active]="item.name == radioSel.name ? true : false">
+            [class.active]="vehicle.isRegistered">
+            <input 
+                type="radio" 
+                name="isRegistered"
+                id="registered" 
+                [(ngModel)]="vehicle.isRegistered" 
+                [value]="true"  
+                
+                > Yes
+        </label>
+        <label for="notRegistered"
+            class="btn btn-light" 
+            [class.active]="!vehicle.isRegistered">
             <input 
                 type="radio" 
                 name="isRegistered" 
+                id="notRegistered"
                 [(ngModel)]="vehicle.isRegistered" 
-                value="{{ item.value }}" 
-                (change)="onItemChange(item)" 
-                [checked]="item.name == radioSel.name ? true : false"
-                > {{ item.name }}
+                [value]="false"  
+                
+                > No
         </label>
     </div>
     <p> </p>
     
     <h2>Features</h2>
-    <i *ngIf="isFeaturesLoading" class="fa fa-spinner fa-spin fa-3x"></i>
+    <spinner [visible]="isFeaturesLoading"></spinner>
 
     <div *ngFor="let feature of features" class="form-group form-check">
         <label for="feature{{ feature.id }}" class="form-check-label">
@@ -101,12 +113,5 @@
         class="btn btn-primary"
         [disabled]="!f.valid"
         >Save
-    </button>
-    <button 
-        type="button" 
-        class="btn btn-danger"
-        (click)="delete()"
-        *ngIf="vehicle.id"
-        >Delete
     </button>
 </form>

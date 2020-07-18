@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "8.2.12",
     "@angular/platform-server": "8.2.12",
     "@angular/router": "8.2.12",
-    "@fortawesome/fontawesome-free": "^5.13.1",
     "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "@sentry/browser": "^5.19.2",
     "@types/underscore": "^1.10.9",
