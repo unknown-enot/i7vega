@@ -32,7 +32,14 @@
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col" (click)="sortBy('make')">Make</th>
+            <th scope="col" (click)="sortBy('make')">
+                Make
+                <i *ngIf="query.sortBy === 'make'" 
+                class="fa" 
+                [class.fa-sort-amount-asc]="query.isSortAscending"
+                [class.fa-sort-amount-desc]="!query.isSortAscending"
+                ></i>
+            </th>
             <th scope="col" (click)="sortBy('model')">Model</th>
             <th scope="col" (click)="sortBy('contactName')">Contact Name</th>
             <th scope="col">Edit</th>
