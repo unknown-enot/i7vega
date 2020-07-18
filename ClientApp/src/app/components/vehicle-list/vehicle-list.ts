@@ -1,5 +1,5 @@
 import { ToastrService } from 'ngx-toastr';
-import { Vehicle } from './../../models/vehicle';
+import { Vehicle, KeyValuePair } from './../../models/vehicle';
 import { VehicleService } from './../../services/vehicle.service';
 import { OnInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 export class VehicleListComponent implements OnInit {
     isLoading = true;
     vehicles: Vehicle[];
+    allVehicles: Vehicle[];
+    makes: KeyValuePair[];
+    filter: any = {};
+
     constructor(
         private vehicleService: VehicleService,
         private router: Router,
@@ -17,8 +21,11 @@ export class VehicleListComponent implements OnInit {
     }
     
     ngOnInit(){
+        this.vehicleService.getMakes()
+            .subscribe(makes => this.makes = <any>makes);
+
         this.vehicleService.getVehicles()
-            .subscribe(vehicles => this.vehicles = <any>vehicles,
+            .subscribe(vehicles => this.vehicles = this.allVehicles = <any>vehicles,
                 null,
                 () => this.isLoading = false);
     }
@@ -41,5 +48,22 @@ export class VehicleListComponent implements OnInit {
                     },
                     () => this.toastrService.success('Vehicle has been successfully deleted from the Database.','Deleted'));
 		}
-	}
+    }
+    
+    onFilterChange() {
+        var vehicles = this.allVehicles;
+
+        if(this.filter.makeId)
+            vehicles = vehicles.filter(v => v.make.id == this.filter.makeId);
+        
+        if(this.filter.modelId)
+            vehicles = vehicles.filter(v => v.model.id == this.filter.modelId);
+
+        this.vehicles = vehicles;
+    }
+
+    resetFilter(){
+        this.filter = {};
+        this.onFilterChange();
+    }
 }
