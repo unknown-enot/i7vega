@@ -28,7 +28,7 @@ namespace vega.Persistance
                 .ThenInclude(m => m.Make)
                 .SingleOrDefaultAsync(v => v.Id == id);
         }
-        public async Task<IEnumerable<Vehicle>> GetVehicles(Filter filter)
+        public async Task<IEnumerable<Vehicle>> GetVehicles(VehicleQuery queryObj)
         {
             var query = context.Vehicles
                 .Include(v => v.Model)
@@ -37,11 +37,20 @@ namespace vega.Persistance
                 .ThenInclude(vf => vf.Feature)
                 .AsQueryable();
 
-            if(filter.MakeId.HasValue)
-                query = query.Where(v => v.Model.MakeId == filter.MakeId);
+            if(queryObj.MakeId.HasValue)
+                query = query.Where(v => v.Model.MakeId == queryObj.MakeId);
           
-            if(filter.ModelId.HasValue)
-                query = query.Where(v => v.ModelId == filter.ModelId);
+            if(queryObj.ModelId.HasValue)
+                query = query.Where(v => v.ModelId == queryObj.ModelId);
+
+            if(queryObj.SortBy == "make")
+                query = (queryObj.IsSortAscending) ? query.OrderBy(v => v.Model.Make.Name) : query.OrderByDescending(v => v.Model.Make.Name);
+            
+            if(queryObj.SortBy == "model")
+                query = (queryObj.IsSortAscending) ? query.OrderBy(v => v.Model.Name) : query.OrderByDescending(v => v.Model.Name);
+            
+            if(queryObj.SortBy == "contactName")
+                query = (queryObj.IsSortAscending) ? query.OrderBy(v => v.ContactName) : query.OrderByDescending(v => v.ContactName);
 
             return await query.ToListAsync();
         }
