@@ -38,6 +38,9 @@
     <ng-container *ngSwitchCase="'photos'">
       <br/>
       <h2>Photos</h2>
+
+      <input type="file" (change)="uploadPhoto()" #fileInput>
+
     </ng-container>
   </div>
 </div>

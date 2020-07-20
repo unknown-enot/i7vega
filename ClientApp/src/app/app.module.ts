@@ -22,6 +22,7 @@ import { FetchDataComponent } from './components/fetch-data/fetch-data.component
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
+import { PhotoService } from './services/photo.service';
 
 Sentry.init({
   dsn: "https://2362c8277a134c13bbf93b3fde92fd6c@o421718.ingest.sentry.io/5341916",
@@ -72,7 +73,9 @@ Sentry.init({
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    VehicleService],
+    VehicleService,
+    PhotoService 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
