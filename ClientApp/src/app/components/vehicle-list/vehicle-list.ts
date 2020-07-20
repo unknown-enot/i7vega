@@ -13,7 +13,7 @@ export class VehicleListComponent implements OnInit {
 
     queryResult: any = {};
     isLoading = true;
-    makes: KeyValuePair[];
+    makes: any[];
     models: KeyValuePair[];
     query: any = {
         pageSize: this.PAGE_SIZE
