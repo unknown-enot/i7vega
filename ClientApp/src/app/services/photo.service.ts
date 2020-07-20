@@ -11,4 +11,8 @@ export class PhotoService {
 
         return this.http.post(`/api/vehicles/${vehicleId}/photos`, formData);
     }
+
+    getPhotos(vehicleId){
+        return this.http.get(`/api/vehicles/${vehicleId}/photos`);
+    }
 }
