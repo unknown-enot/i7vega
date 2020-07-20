@@ -39,26 +39,6 @@ export class VehicleListComponent implements OnInit {
         this.populateVehicles();
     }
 
-    delete(vehicle){
-		if (confirm("Are you sure you want to delete " + vehicle.make.name + " - " + vehicle.model.name + "?")) {
-			var index = this.queryResult.items.indexOf(vehicle)
-			// Here, with the splice method, we remove 1 object
-            // at the given index.
-            this.queryResult.items.splice(index, 1);
-
-			this.vehicleService.delete(vehicle.id)
-				.subscribe(null, 
-					err => {
-						this.toastrService.error('Could not delete the vehicle.', 'NotDeleted');
-                        // Revert the view back to its original state
-                        // by putting the user object at the index
-                        // it used to be.
-						this.queryResult.items.splice(index, 0, vehicle);
-                    },
-                    () => this.toastrService.success('Vehicle has been successfully deleted from the Database.','Deleted'));
-		}
-    }
-
     private populateModels(){
         var selectedMake = this.makes.find(m => m.id == this.query.makeId);
         this.models = selectedMake ? selectedMake.models : [];

@@ -1,0 +1,54 @@
+<h1>Vehicle</h1>
+<div>
+
+  
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a (click)="viewMode = 'vehicles'" class="nav-link" [class.active]="viewMode == 'vehicles'" >Vehicle</a></li>
+    <li class="nav-item"><a (click)="viewMode = 'photos'" class="nav-link" [class.active]="viewMode == 'photos'" >Photos</a></li>
+  </ul>
+  <!-- <div [ngSwitch]="viewMode">
+    <ng-container *ngSwitchCase="'vehicles'">
+      <h2>Basics</h2>
+    </ng-container>
+    <ng-container *ngSwitchCase="'photos'">
+      <h2>Photos</h2>
+    </ng-container>
+  </div>
+</div> -->
+ 
+  <div [ngSwitch]="viewMode">
+  
+    <ng-container *ngSwitchCase="'vehicles'">
+      <div *ngIf="vehicle">
+        <br/>
+        <h2>Basics</h2>
+        <ul>
+          <li>Make: {{ vehicle.make.name }}</li>
+          <li>Model: {{ vehicle.model.name }}</li>
+          <li>Registered: {{ vehicle.isRegistered ? 'Yes' : 'No' }}
+        </ul>
+        <h2>Features</h2>
+        <ul>
+          <li *ngFor="let f of vehicle.features">{{ f.name }}</li>
+        </ul>
+        <h2>Contact</h2>
+        <ul>
+          <li>Contact Name: {{ vehicle.contact.name }}</li>
+          <li>Contact Phone: {{ vehicle.contact.phone }}</li>
+          <li>Contact Email: {{ vehicle.contact.email }}</li>
+        </ul>
+        <br/>
+        <p>
+          <a class="btn btn-primary" [routerLink]="['/vehicles/edit/', vehicleId]">Edit</a>
+          <button class="btn btn-danger" (click)="delete()">Delete</button>
+          <a class="btn btn-default" [routerLink]="['/vehicles']">View All Vehicles</a>
+        </p>
+      </div>
+    </ng-container>
+    
+    <ng-container *ngSwitchCase="'photos'">
+      <br/>
+      <h2>Photos</h2>
+    </ng-container>
+  </div>
+</div>
