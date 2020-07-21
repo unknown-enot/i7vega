@@ -16,6 +16,9 @@ export class ViewVehicleComponent implements OnInit {
     viewMode = 'vehicles';
     photos: any[];
 
+    uploadResponse = {};
+    error: string;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -66,8 +69,10 @@ export class ViewVehicleComponent implements OnInit {
     uploadPhoto(){
         var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
         this.photoService.upload(this.vehicleId, nativeElement.files[0])
-            .subscribe(photo => {
-                this.photos.push(photo)}
+            .subscribe(res => {
+                this.uploadResponse = res},
+                err => this.error = err,
+                () => this.photos.push(this.uploadResponse)
             );
     }
 }
