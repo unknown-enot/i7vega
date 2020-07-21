@@ -60,7 +60,13 @@
     
         <div class="form-group">
           <input type="file" class="form-control-file" (change)="uploadPhoto()" #fileInput>
+          <button class="btn btn-danger"
+          *ngIf="uploadResponse.status === 'progress'" 
+          (click)="cancelUpload()">Cancel</button>
         </div>
+        
+        
+        
       </div>     
 
       <img *ngFor="let photo of photos" src="/uploads/{{ photo.fileName }}" class="img-thumbnail">

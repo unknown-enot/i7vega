@@ -3,6 +3,7 @@ import { VehicleService } from './../../services/vehicle.service';
 import { ToastrService } from 'ngx-toastr';
 import { OnInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { subscribeOn } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +19,7 @@ export class ViewVehicleComponent implements OnInit {
 
     uploadResponse = {};
     error: string;
+    sub;
 
     constructor(
         private route: ActivatedRoute,
@@ -68,11 +70,17 @@ export class ViewVehicleComponent implements OnInit {
 
     uploadPhoto(){
         var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
-        this.photoService.upload(this.vehicleId, nativeElement.files[0])
+        this.sub = this.photoService.upload(this.vehicleId, nativeElement.files[0])
             .subscribe(res => {
                 this.uploadResponse = res},
                 err => this.error = err,
                 () => this.photos.push(this.uploadResponse)
             );
+    }
+
+    cancelUpload(){
+        this.sub.unsubscribe();
+        this.uploadResponse = {};
+        this.error = '';
     }
 }
