@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,12 +36,31 @@ namespace vega
             //
             services.AddControllers().AddNewtonsoftJson();
             //services.AddControllersWithViews();
+
+            
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
             
+            services.AddMvc();
+
+            // 1. Add Authentication Services
+            
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                
+                
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = "https://dev-eu-vega-project.eu.auth0.com/";
+                options.Audience = "https://api.dev-eu-vega.com";
+            });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +84,12 @@ namespace vega
                 app.UseSpaStaticFiles();
             }
 
+            
+
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
