@@ -49,9 +49,9 @@ namespace vega.Controllers
                 return NotFound();
 
             if (file == null) return BadRequest("Null file.");
+            if (!photoSettings.IsSupported(file.FileName)) return BadRequest("Invalid file type.");
             if (file.Length == 0) return BadRequest("Empty file.");
             if (file.Length > photoSettings.MaxBytes) return BadRequest("Max file size exceeded.");
-            if (!photoSettings.IsSupported(file.FileName)) return BadRequest("Invalid file type.");
 
             var uploadsFolderPath = Path.Combine(host.WebRootPath, "uploads");
             if (!Directory.Exists(uploadsFolderPath))

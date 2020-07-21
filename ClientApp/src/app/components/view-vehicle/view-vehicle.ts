@@ -69,12 +69,21 @@ export class ViewVehicleComponent implements OnInit {
     }
 
     uploadPhoto(){
+        this.error = '';
         var nativeElement: HTMLInputElement = this.fileInput.nativeElement;
-        this.sub = this.photoService.upload(this.vehicleId, nativeElement.files[0])
+        var file = nativeElement.files[0];
+        nativeElement.value = '';
+        this.sub = this.photoService.upload(this.vehicleId, file)
             .subscribe(res => {
                 this.uploadResponse = res},
-                err => this.error = err,
-                () => this.photos.push(this.uploadResponse)
+                err => { 
+                    this.error = err,
+                    this.toastrService.error(err, 'Error')
+                },
+                () => { 
+                    this.photos.push(this.uploadResponse),
+                    this.toastrService.success('Photo was successfully uploaded', 'Success')
+                }
             );
     }
 

@@ -1,6 +1,7 @@
-import { HttpClient, HttpEventType } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class PhotoService {
@@ -16,7 +17,9 @@ export class PhotoService {
             {
                 reportProgress: true,
                 observe: 'events'
-            }).pipe(map((event) => {
+            })
+            .pipe(catchError(this.errorMgmt))
+            .pipe(map((event) => {
 
                 switch (event.type) {
                     case HttpEventType.UploadProgress:
@@ -25,14 +28,25 @@ export class PhotoService {
                         
                     case HttpEventType.Response:
                         return event.body;
-                
+
                     default:
                         return `Unhandled event: ${event.type}`;
                 }
             })
-                
             );
     }
+
+    errorMgmt(error: HttpErrorResponse) {
+        let errorMessage = '';
+        if (error.error instanceof ErrorEvent) {
+          // Get client-side error
+          errorMessage = error.error.message;
+        } else {
+          // Get server-side error
+          errorMessage = `Error Code: ${error.status}\nMessage: ${error.error}`;
+        }
+        return throwError(errorMessage);
+      }
 
     getPhotos(vehicleId){
         return this.http.get(`/api/vehicles/${vehicleId}/photos`);

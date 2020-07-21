@@ -49,7 +49,7 @@
           {{ uploadResponse.message }}
         </div>
         <!-- Progress Bar -->
-        <div class="progress form-group" *ngIf="uploadResponse.status === 'progress'">
+        <div class="progress form-group" *ngIf="uploadResponse.status === 'progress' && uploadResponse.message > 0 && uploadResponse.message < 100">
           <div 
             class="progress-bar progress-bar-striped bg-success" 
             role="progressbar" 
