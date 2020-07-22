@@ -1,3 +1,4 @@
+import { AuthService } from './services/auth.service';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle';
 import { PaginationComponent } from './components/shared/pagination.component';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list';
@@ -73,6 +74,7 @@ Sentry.init({
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
+    AuthService,
     VehicleService,
     PhotoService 
   ],
