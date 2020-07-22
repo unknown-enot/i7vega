@@ -26,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from './services/photo.service';
 import { AuthGuard } from './auth.guard';
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 Sentry.init({
   dsn: "https://2362c8277a134c13bbf93b3fde92fd6c@o421718.ingest.sentry.io/5341916",
@@ -79,8 +80,9 @@ Sentry.init({
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
     AuthService,
+    JwtHelperService,
     VehicleService,
-    PhotoService 
+    PhotoService
   ],
   bootstrap: [AppComponent]
 })
