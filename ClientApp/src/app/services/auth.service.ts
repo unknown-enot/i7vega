@@ -41,7 +41,7 @@ export class AuthService {
   loggedIn: boolean = null;
   
   public roles: string[] = [];
-  private profile: any = {};
+  public profile: any = {};
 
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
@@ -141,7 +141,7 @@ export class AuthService {
         returnTo: `${window.location.origin}`
       });
     });
-    this.roles = [];
+    
   }
 
 }

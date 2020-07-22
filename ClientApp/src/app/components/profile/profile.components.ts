@@ -7,17 +7,13 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  userProfile: any = {};
+  
   constructor(public auth: AuthService) { 
-      auth.userProfile$
-        .subscribe(res => { 
-          this.userProfile = res
-        });
       
    }
 
   ngOnInit() {
-      
+    
   }
 
 }
