@@ -1,3 +1,4 @@
+import { AdminComponent } from './components/admin/admin.component';
 import { ProfileComponent } from './components/profile/profile.components';
 import { AuthService } from './services/auth.service';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle';
@@ -41,6 +42,7 @@ Sentry.init({
 @NgModule({
   declarations: [
     AppComponent,
+    AdminComponent,
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
@@ -71,6 +73,7 @@ Sentry.init({
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles', component: VehicleListComponent },
+      { path: 'admin', component: AdminComponent },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: '' }
 

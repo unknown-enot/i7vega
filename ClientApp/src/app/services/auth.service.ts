@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+ 
+  
   // Create an observable of Auth0 instance of client
   
   auth0Client$ = (from(
@@ -37,7 +39,10 @@ export class AuthService {
   userProfile$ = this.userProfileSubject$.asObservable();
   // Create a local property for login status
   loggedIn: boolean = null;
-    
+  
+  public roles: string[] = [];
+  private profile: any = {};
+
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
@@ -45,6 +50,7 @@ export class AuthService {
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
     
+    this.getProfile();
   }
 
   // When calling, options can be passed if desired
@@ -55,13 +61,7 @@ export class AuthService {
       tap(user => this.userProfileSubject$.next(user))
     );
   }
-
-  getTokenSilently$(options?): Observable<string> {
-    return this.auth0Client$.pipe(
-      concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
-    );
-  }
-
+  
   private localAuthSetup() {
     // This should only be called on app initialization
     // Set up local authentication streams
@@ -77,6 +77,17 @@ export class AuthService {
       })
     );
     checkAuth$.subscribe();
+  }
+
+  private getProfile(){
+    this.userProfileSubject$.subscribe(res => this.profile = res);
+  }
+
+  public isInRole(roleName){
+    if(this.profile && this.profile['https://dev-eu-vega.com/roles'])
+      this.roles = this.profile['https://dev-eu-vega.com/roles'];
+      
+    return this.roles.indexOf(roleName) > -1;
   }
 
   login(redirectPath: string = '/') {
@@ -117,6 +128,7 @@ export class AuthService {
         // Redirect to target route after callback processing
         this.router.navigate([targetRoute]);
       });
+      
     }
   }
 
@@ -129,6 +141,7 @@ export class AuthService {
         returnTo: `${window.location.origin}`
       });
     });
+    this.roles = [];
   }
 
 }
