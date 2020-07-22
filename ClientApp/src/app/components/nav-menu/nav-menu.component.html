@@ -54,6 +54,19 @@
               >Fetch data</a
             >
           </li>
+
+          <li
+            class="nav-item"
+            [routerLinkActive]="['link-active','bg-dark']">
+            <a class="nav-link text-light"
+              (click)="auth.login()" 
+              *ngIf="!auth.loggedIn"
+            >Log In</a>
+            <a class="nav-link text-light"
+              (click)="auth.logout()" 
+              *ngIf="auth.loggedIn"
+            >Log Out</a>
+          </li>
         </ul>
       </div>
     </div>
