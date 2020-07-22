@@ -1,0 +1,11 @@
+<pre *ngIf="auth.userProfile$ | async as profile">
+    <code>{{ profile | json }}</code>
+</pre>
+
+<div class="media">
+    <img src="{{ userProfile.picture }}" class="mr-3" alt="userProfileAvatar">
+    <div class="media-body">
+      <h5 class="mt-0">{{ userProfile.name }} @{{ userProfile.nickname }}</h5>
+      email: {{ userProfile.email }}
+    </div>
+</div>

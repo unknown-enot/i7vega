@@ -1,3 +1,4 @@
+import { ProfileComponent } from './components/profile/profile.components';
 import { AuthService } from './services/auth.service';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle';
 import { PaginationComponent } from './components/shared/pagination.component';
@@ -24,6 +25,7 @@ import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from './services/photo.service';
+import { AuthGuard } from './auth.guard';
 
 Sentry.init({
   dsn: "https://2362c8277a134c13bbf93b3fde92fd6c@o421718.ingest.sentry.io/5341916",
@@ -46,7 +48,8 @@ Sentry.init({
     SpinnerComponent,
     VehicleListComponent,
     ViewVehicleComponent,
-    PaginationComponent
+    PaginationComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -67,6 +70,7 @@ Sentry.init({
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles', component: VehicleListComponent },
+      { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: '**', redirectTo: '' }
 
     ])

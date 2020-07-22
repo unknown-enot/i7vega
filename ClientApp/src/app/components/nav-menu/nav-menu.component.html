@@ -55,6 +55,16 @@
             >
           </li>
 
+          <li 
+            class="nav-item"
+
+            [routerLinkActive]="['link-active','bg-dark']">
+            <a class="nav-link text-light" [routerLink]="['/profile']"
+              *ngIf="auth.loggedIn">
+              Profile</a
+            >
+          </li>
+
           <li
             class="nav-item"
             [routerLinkActive]="['link-active','bg-dark']">
