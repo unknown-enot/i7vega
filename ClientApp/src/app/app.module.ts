@@ -41,9 +41,9 @@ Sentry.init({
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AdminComponent,
+    AppComponent,   
     NavMenuComponent,
+    AdminComponent,
     HomeComponent,
     CounterComponent,
     FetchDataComponent,

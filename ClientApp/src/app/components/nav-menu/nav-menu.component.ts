@@ -1,5 +1,5 @@
-import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+import { Component, OnInit, Inject, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,11 +12,11 @@ export class NavMenuComponent implements OnInit{
   isExpanded = false;
 
   constructor(private auth: AuthService){
-
+      
   }
 
   ngOnInit(){
-
+    
   }
 
 
