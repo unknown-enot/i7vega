@@ -28,6 +28,8 @@ import { CommonModule } from '@angular/common';
 import { PhotoService } from './services/photo.service';
 import { AuthGuard } from './auth.guard';
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { AdminGuard } from './admin.guard';
+import { NotAuthorizedComponent } from './components/notauthorized.component';
 
 Sentry.init({
   dsn: "https://2362c8277a134c13bbf93b3fde92fd6c@o421718.ingest.sentry.io/5341916",
@@ -52,7 +54,8 @@ Sentry.init({
     VehicleListComponent,
     ViewVehicleComponent,
     PaginationComponent,
-    ProfileComponent
+    ProfileComponent,
+    NotAuthorizedComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -73,8 +76,9 @@ Sentry.init({
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles', component: VehicleListComponent },
-      { path: 'admin', component: AdminComponent },
+      { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+      { path: 'notauthorized', component: NotAuthorizedComponent },
       { path: '**', redirectTo: '' }
 
     ])
@@ -83,6 +87,8 @@ Sentry.init({
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
     AuthService,
+    AuthGuard,
+    AdminGuard,
     JwtHelperService,
     VehicleService,
     PhotoService
