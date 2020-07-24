@@ -40,19 +40,8 @@ export class AuthService {
   // Create a local property for login status
   loggedIn: boolean = null;
 
-  isAdmin: boolean = false;
-  
-  isInRole$ = this.userProfile$.pipe(
-    delay(500),
-    //filter((value) => !!value),
-    tap(userProfile => {
-          if(userProfile && userProfile['https://dev-eu-vega.com/roles'])
-            this.isAdmin = userProfile['https://dev-eu-vega.com/roles'].indexOf('Admin') > -1;
-          else 
-            this.isAdmin = false;
-          console.log("isInRole$ method: ", this.isAdmin);
-      }
-  ));
+  public roles: string[] = [];
+  private profile: any = {};
 
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
@@ -61,6 +50,18 @@ export class AuthService {
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
     
+    this.getProfile();
+  }
+  
+  private getProfile(){
+    this.userProfileSubject$.subscribe(res => this.profile = res);
+  }
+
+  public isInRole(roleName){
+    if(this.profile && this.profile['https://dev-eu-vega.com/roles'])
+      this.roles = this.profile['https://dev-eu-vega.com/roles'];
+      
+    return this.roles.indexOf(roleName) > -1;
   }
 
   // When calling, options can be passed if desired
