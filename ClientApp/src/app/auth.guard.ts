@@ -10,7 +10,7 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(protected auth: AuthService) {}
+  constructor(private auth: AuthService) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,

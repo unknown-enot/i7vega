@@ -27,8 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule } from '@angular/common';
 import { PhotoService } from './services/photo.service';
 import { AuthGuard } from './auth.guard';
-import { JwtHelperService } from "@auth0/angular-jwt";
-import { AdminGuard } from './admin.guard';
+import { RoleGuard } from './role.guard';
 import { NotAuthorizedComponent } from './components/notauthorized.component';
 
 Sentry.init({
@@ -76,7 +75,12 @@ Sentry.init({
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles', component: VehicleListComponent },
-      { path: 'admin', component: AdminComponent, canActivate: [AdminGuard] },
+      { path: 'admin', component: AdminComponent, 
+      canActivate: [AuthGuard, RoleGuard], 
+      data: { 
+        expectedRole: 'Admin'
+      }},
+
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'notauthorized', component: NotAuthorizedComponent },
       { path: '**', redirectTo: '' }
@@ -87,10 +91,9 @@ Sentry.init({
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
     AuthService,
-    AuthGuard,
-    AdminGuard,
-    JwtHelperService,
     VehicleService,
+    AuthGuard,
+    RoleGuard,
     PhotoService
   ],
   bootstrap: [AppComponent]

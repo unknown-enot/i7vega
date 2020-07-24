@@ -2,17 +2,14 @@ import { Injectable } from '@angular/core';
 import createAuth0Client from '@auth0/auth0-spa-js';
 import Auth0Client from '@auth0/auth0-spa-js/dist/typings/Auth0Client';
 import { from, of, Observable, BehaviorSubject, combineLatest, throwError } from 'rxjs';
-import { tap, catchError, concatMap, shareReplay, mergeMap } from 'rxjs/operators';
+import { tap, catchError, concatMap, shareReplay, mergeMap, filter, delay } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
- 
-  
+export class AuthService {  
   // Create an observable of Auth0 instance of client
-  
   auth0Client$ = (from(
     createAuth0Client({
       domain: "dev-eu-vega-project.eu.auth0.com",
@@ -28,20 +25,34 @@ export class AuthService {
   // concatMap: Using the client instance, call SDK method; SDK returns a promise
   // from: Convert that resulting promise into an observable
   isAuthenticated$ = this.auth0Client$.pipe(
+    delay(500),
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
     tap(res => this.loggedIn = res)
   );
+
   handleRedirectCallback$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.handleRedirectCallback()))
   );
+
   // Create subject and public observable of user profile data
   private userProfileSubject$ = new BehaviorSubject<any>(null);
   userProfile$ = this.userProfileSubject$.asObservable();
   // Create a local property for login status
   loggedIn: boolean = null;
+
+  isAdmin: boolean = false;
   
-  public roles: string[] = [];
-  public profile: any = {};
+  isInRole$ = this.userProfile$.pipe(
+    delay(500),
+    //filter((value) => !!value),
+    tap(userProfile => {
+          if(userProfile && userProfile['https://dev-eu-vega.com/roles'])
+            this.isAdmin = userProfile['https://dev-eu-vega.com/roles'].indexOf('Admin') > -1;
+          else 
+            this.isAdmin = false;
+          console.log("isInRole$ method: ", this.isAdmin);
+      }
+  ));
 
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
@@ -50,7 +61,6 @@ export class AuthService {
     // Handle redirect from Auth0 login
     this.handleAuthCallback();
     
-    this.getProfile();
   }
 
   // When calling, options can be passed if desired
@@ -77,17 +87,6 @@ export class AuthService {
       })
     );
     checkAuth$.subscribe();
-  }
-
-  private getProfile(){
-    this.userProfileSubject$.subscribe(res => this.profile = res);
-  }
-
-  public isInRole(roleName){
-    if(this.profile && this.profile['https://dev-eu-vega.com/roles'])
-      this.roles = this.profile['https://dev-eu-vega.com/roles'];
-      
-    return this.roles.indexOf(roleName) > -1;
   }
 
   login(redirectPath: string = '/') {
