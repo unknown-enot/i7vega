@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using vega.Controllers;
 using vega.Core;
 using vega.Core.Models;
 using vega.Persistance;
@@ -45,10 +46,10 @@ namespace vega
             });
             
             
-            // 1. Add Authentication Services
-            // services.AddAuthorization(options => {
-            //     options.AddPolicy(Polices.RequiredAdminRole, policy => policy.RequireClaim("https://vega.com/roles", "admin"));
-            // });
+            //1. Add Authentication Services
+            services.AddAuthorization(options => {
+                options.AddPolicy(AppPolicies.RequireAdminRole, policy => policy.RequireClaim("https://dev-eu-vega.com/roles", "Admin"));
+            });
 
             services.AddAuthentication(options =>
             {

@@ -25,7 +25,7 @@ namespace vega.Controllers
 
         }
         [HttpPost]
-        [Authorize]
+        [Authorize(AppPolicies.RequireAdminRole)]
         public async Task<IActionResult> CreateVehicle([FromBody] SaveVehicleResource vehicleResource)
         {
             if (!ModelState.IsValid)
@@ -81,7 +81,7 @@ namespace vega.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(AppPolicies.RequireAdminRole)]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
             var vehicle = await repository.GetVehicle(id, includeRelated: false);
