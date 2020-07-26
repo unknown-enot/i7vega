@@ -31,6 +31,7 @@ namespace vega
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IPhotoService, PhotoService>();
             services.AddAutoMapper(typeof(Startup));
             // Registering our DbContext for Dependency Injection
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
