@@ -36,7 +36,7 @@ namespace vega
             //
             services.AddControllers().AddNewtonsoftJson();
             //services.AddControllersWithViews();
-
+            //services.AddMvc(option => option.EnableEndpointRouting = false).AddNewtonsoftJson();
             
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -44,16 +44,16 @@ namespace vega
                 configuration.RootPath = "ClientApp/dist";
             });
             
-            services.AddMvc();
-
-            // 1. Add Authentication Services
             
+            // 1. Add Authentication Services
+            // services.AddAuthorization(options => {
+            //     options.AddPolicy(Polices.RequiredAdminRole, policy => policy.RequireClaim("https://vega.com/roles", "admin"));
+            // });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                
-                
             }).AddJwtBearer(options =>
             {
                 options.Authority = "https://dev-eu-vega-project.eu.auth0.com/";
@@ -84,12 +84,19 @@ namespace vega
                 app.UseSpaStaticFiles();
             }
 
-            
-
             app.UseRouting();
 
+            // 2. Enable authentication middleware
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // app.UseMvc(routes =>
+            // {
+            //     routes.MapRoute(
+            //     name: "default",
+            //     template: "{controller}/{action=Index}/{id?}");
+            // });
+            
 
             app.UseEndpoints(endpoints =>
             {

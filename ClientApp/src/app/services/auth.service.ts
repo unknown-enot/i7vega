@@ -14,7 +14,8 @@ export class AuthService {
     createAuth0Client({
       domain: "dev-eu-vega-project.eu.auth0.com",
       client_id: "llDVCDD3w6pVwYBCiXBzP30f4SNJwxjj",
-      redirect_uri: `${window.location.origin}`
+      redirect_uri: `${window.location.origin}`,
+      audience: "https://api.dev-eu-vega.com"
     })
   ) as Observable<Auth0Client>).pipe(
     shareReplay(1), // Every subscription receives the same shared value
@@ -42,7 +43,6 @@ export class AuthService {
 
   public roles: string[] = [];
   private profile: any = {};
-
   constructor(private router: Router) {
     // On initial load, check authentication state with authorization server
     // Set up local auth streams if user is already authenticated
@@ -51,10 +51,11 @@ export class AuthService {
     this.handleAuthCallback();
     
     this.getProfile();
+    
   }
   
   private getProfile(){
-    this.userProfileSubject$.subscribe(res => this.profile = res);
+    this.userProfile$.subscribe(res => this.profile = res);
   }
 
   public isInRole(roleName){
@@ -63,6 +64,7 @@ export class AuthService {
       
     return this.roles.indexOf(roleName) > -1;
   }
+    
 
   // When calling, options can be passed if desired
   // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#getuser
@@ -101,6 +103,12 @@ export class AuthService {
         appState: { target: redirectPath }
       });
     });
+  }
+
+  getTokenSilently$(options?): Observable<string> {
+    return this.auth0Client$.pipe(
+      concatMap((client: Auth0Client) => from(client.getTokenSilently(options)))
+    );
   }
 
   private handleAuthCallback() {

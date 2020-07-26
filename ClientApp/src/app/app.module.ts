@@ -1,3 +1,6 @@
+import { ScopesService } from './services/scopes.service';
+import { InterceptorService } from './services/interceptor.service';
+import { RolesAuthGuard } from './Roles.guard';
 import { AdminComponent } from './components/admin/admin.component';
 import { ProfileComponent } from './components/profile/profile.components';
 import { AuthService } from './services/auth.service';
@@ -29,6 +32,8 @@ import { PhotoService } from './services/photo.service';
 import { AuthGuard } from './auth.guard';
 import { RoleGuard } from './role.guard';
 import { NotAuthorizedComponent } from './components/notauthorized.component';
+
+
 
 Sentry.init({
   dsn: "https://2362c8277a134c13bbf93b3fde92fd6c@o421718.ingest.sentry.io/5341916",
@@ -71,30 +76,33 @@ Sentry.init({
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'vehicles/new', component: VehicleFormComponent },
+      { path: 'vehicles/new', component: VehicleFormComponent, canActivate: [AuthGuard] },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles', component: VehicleListComponent },
       { path: 'admin', component: AdminComponent, 
-      canActivate: [AuthGuard, RoleGuard], 
+      canActivate: [AuthGuard, RolesAuthGuard], 
       data: { 
         expectedRole: 'Admin'
       }},
 
       { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
       { path: 'notauthorized', component: NotAuthorizedComponent },
-      { path: '**', redirectTo: '' }
+      { path: '**', redirectTo: 'vehicles' }
 
     ])
 
   ],
   providers: [
     { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
     AuthService,
     VehicleService,
     AuthGuard,
     RoleGuard,
-    PhotoService
+    RolesAuthGuard,
+    PhotoService,
+    ScopesService
   ],
   bootstrap: [AppComponent]
 })

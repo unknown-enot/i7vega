@@ -21,14 +21,12 @@ export class RoleGuard implements CanActivate, OnDestroy {
   canActivate(
     route: ActivatedRouteSnapshot, 
     state: RouterStateSnapshot): 
-    Observable<boolean> | Promise<boolean|UrlTree> | boolean {
-    
+    Observable<boolean> | Promise<boolean|UrlTree> | boolean { 
       if(!this.auth.loggedIn) {
         return false;
       }
       //... your role guard check code goes here
       const expectedRole = route.data.expectedRole;
-      
       var profile;
       this.subscription = this.auth.userProfile$.pipe(take(1)).subscribe(res => profile = res);
       if (profile)
@@ -36,8 +34,7 @@ export class RoleGuard implements CanActivate, OnDestroy {
         if(profile['https://dev-eu-vega.com/roles'].indexOf(expectedRole) > -1){
           console.log('Success', profile);
           return true;
-        }
-          
+        }          
       }  
       this.router.navigate(['/notauthorized']);
       return false;
@@ -46,9 +43,6 @@ export class RoleGuard implements CanActivate, OnDestroy {
     ngOnDestroy(){
       //this.subscription.unsubscribe();
     }
-  
-  
- 
 }
 
 // import { Injectable } from '@angular/core';
