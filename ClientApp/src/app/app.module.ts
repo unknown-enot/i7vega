@@ -32,7 +32,7 @@ import { PhotoService } from './services/photo.service';
 import { AuthGuard } from './auth.guard';
 import { RoleGuard } from './role.guard';
 import { NotAuthorizedComponent } from './components/notauthorized.component';
-
+import { ChartModule } from 'angular2-chartjs';
 
 
 Sentry.init({
@@ -66,6 +66,7 @@ Sentry.init({
     HttpClientModule,
     FormsModule,
     CommonModule,
+    ChartModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({ 
       timeOut: 5000, 
