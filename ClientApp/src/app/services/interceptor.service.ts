@@ -29,7 +29,7 @@ export class InterceptorService implements HttpInterceptor {
 
     return this.auth.getTokenSilently$().pipe(
       mergeMap(token => {   
-        console.log('myToken', token); 
+         
         const tokenReq = req.clone({
           setHeaders: { Authorization: `Bearer ${token}` }
         });

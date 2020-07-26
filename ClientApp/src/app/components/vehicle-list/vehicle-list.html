@@ -1,7 +1,7 @@
 <h1>Vehicles</h1>
 
 <p>
-    <a [routerLink]="['/vehicles/new']" class="btn btn-primary">New Vehicle</a>
+    <a *ngIf="auth.isInRole('Admin')" [routerLink]="['/vehicles/new']" class="btn btn-primary">New Vehicle</a>
 </p> 
 <div class="card card-body bg-light">
     <div class="form-group">

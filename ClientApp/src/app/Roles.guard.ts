@@ -23,7 +23,6 @@ export class RolesAuthGuard extends AuthGuard {
       //return isAuthentificated ? this.auth.isInRole(expectedRole) : false;
       if(isAuthentificated){
         if(this.auth.isInRole(expectedRole)){
-            console.log("isInRole", this.auth.isInRole(expectedRole));
             return true;
         }
         return false;

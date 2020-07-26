@@ -76,9 +76,14 @@ Sentry.init({
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'vehicles/new', component: VehicleFormComponent, canActivate: [AuthGuard] },
+      { path: 'vehicles/new', 
+        component: VehicleFormComponent, 
+        canActivate: [AuthGuard, RolesAuthGuard], 
+        data: { 
+          expectedRole: 'Admin'
+      } },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
-      { path: 'vehicles/edit/:id', component: VehicleFormComponent },
+      { path: 'vehicles/edit/:id', component: VehicleFormComponent, canActivate: [AuthGuard] },
       { path: 'vehicles', component: VehicleListComponent },
       { path: 'admin', component: AdminComponent, 
       canActivate: [AuthGuard, RolesAuthGuard], 

@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { forkJoin } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Vehicle, KeyValuePair } from './../../models/vehicle';
@@ -29,7 +30,8 @@ export class VehicleListComponent implements OnInit {
     constructor(
         private vehicleService: VehicleService,
         private router: Router,
-        private toastrService: ToastrService){
+        private toastrService: ToastrService,
+        private auth: AuthService){
     }
     
     ngOnInit(){

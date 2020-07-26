@@ -28,8 +28,8 @@
         </ul>
         <br/>
         <p>
-          <a class="btn btn-primary" [routerLink]="['/vehicles/edit/', vehicleId]">Edit</a>
-          <button class="btn btn-danger" (click)="delete()">Delete</button>
+          <a *ngIf="auth.loggedIn" class="btn btn-primary" [routerLink]="['/vehicles/edit/', vehicleId]">Edit</a>
+          <button *ngIf="auth.isInRole('Admin')" class="btn btn-danger" (click)="delete()">Delete</button>
           <a class="btn btn-default" [routerLink]="['/vehicles']">View All Vehicles</a>
         </p>
       </div>
@@ -41,7 +41,7 @@
         <h2>Photos</h2>
       </div>
       
-      <div class="container">
+      <div *ngIf="auth.loggedIn" class="container">
         <div *ngIf="error">
           {{ error.message }}
         </div>
