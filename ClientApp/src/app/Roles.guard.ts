@@ -25,6 +25,7 @@ export class RolesAuthGuard extends AuthGuard {
         if(this.auth.isInRole(expectedRole)){
             return true;
         }
+        this.router.navigate(['/vehicles']);
         return false;
       }
       this.router.navigate(['/notauthorized']);
