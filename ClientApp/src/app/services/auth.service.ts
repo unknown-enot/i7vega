@@ -26,7 +26,6 @@ export class AuthService {
   // concatMap: Using the client instance, call SDK method; SDK returns a promise
   // from: Convert that resulting promise into an observable
   isAuthenticated$ = this.auth0Client$.pipe(
-    delay(500),
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
     tap(res => this.loggedIn = res)
   );
